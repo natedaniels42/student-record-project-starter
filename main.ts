@@ -2,7 +2,7 @@
 
 const students: HTMLElement | null = document.getElementById('students');
 const add: HTMLElement | null = document.getElementById('add');
-const addForm: HTMLElement | null = document.getElementById('add-form');
+const addForm: HTMLElement | null = document.getElementById('add-form'); 
 
 type Student = {
     firstName: string;
@@ -166,17 +166,29 @@ const populateStudentSection = (studentArr: Student[]): void => {
         students.innerHTML = '';
     }
 
-    studentArr.forEach(student => {
+    studentArr.forEach((student, i) => {
         if (students) {
             students.innerHTML += `<tr>
                 <td>${student.firstName}</td>
                 <td>${student.lastName}</td>
                 <td>${student.course}</td>
                 <td>${student.grade}</td>
-                <td><img src=${student.isPassing ? './checkmark-24.png' : 'x-mark-24.png'}></td>`;
+                <td><img src=${student.isPassing ? './checkmark-24.png' : 'x-mark-24.png'}></td>
+                <td><button class="delete" id=${i}>Delete</button>`;
         }
      
     })
+
+    const deleteButtons: HTMLCollectionOf<Element> | null = document.getElementsByClassName('delete');
+
+    for (let i = 0; i < deleteButtons.length; i++) {
+        deleteButtons[i].addEventListener('click', (event) => {
+            studentArr.splice(Number(event.target.id), 1);
+
+            populateStudentSection(studentArr);
+            localStorage.setItem('students', JSON.stringify(studentArr));
+        })
+    }
 }
 
 if (add && addForm) {
@@ -200,6 +212,8 @@ if (add && addForm) {
         add.style.visibility = 'visible';
     })
 }
+
+
 
 
 

@@ -153,16 +153,25 @@ const populateStudentSection = (studentArr) => {
     if (students) {
         students.innerHTML = '';
     }
-    studentArr.forEach(student => {
+    studentArr.forEach((student, i) => {
         if (students) {
             students.innerHTML += `<tr>
                 <td>${student.firstName}</td>
                 <td>${student.lastName}</td>
                 <td>${student.course}</td>
                 <td>${student.grade}</td>
-                <td><img src=${student.isPassing ? './checkmark-24.png' : 'x-mark-24.png'}></td>`;
+                <td><img src=${student.isPassing ? './checkmark-24.png' : 'x-mark-24.png'}></td>
+                <td><button class="delete" id=${i}>Delete</button>`;
         }
     });
+    const deleteButtons = document.getElementsByClassName('delete');
+    for (let i = 0; i < deleteButtons.length; i++) {
+        deleteButtons[i].addEventListener('click', (event) => {
+            studentArr.splice(Number(event.target.id), 1);
+            populateStudentSection(studentArr);
+            localStorage.setItem('students', JSON.stringify(studentArr));
+        });
+    }
 };
 if (add && addForm) {
     add.addEventListener('click', (event) => {
