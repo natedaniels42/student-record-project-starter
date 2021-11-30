@@ -1,18 +1,4 @@
-// import data from './students.json';
-
-const students: HTMLElement | null = document.getElementById('students');
-const add: HTMLElement | null = document.getElementById('add');
-const addForm: HTMLElement | null = document.getElementById('add-form');
-
-type Student = {
-    firstName: string;
-    lastName: string;
-    course: string;
-    grade: number | string;
-    isPassing: boolean;
-}
-
-const data: Student[] = [
+[
     {
         "firstName": "Patrick",
         "lastName": "Mahomes",
@@ -26,7 +12,7 @@ const data: Student[] = [
         "course": "History",
         "grade": 88,
         "isPassing": true 
-    }, 
+    },
     {
         "firstName": "Tyreek",
         "lastName": "Hill",
@@ -154,87 +140,3 @@ const data: Student[] = [
         "isPassing": true 
     }
 ]
-
-const studentArr: Student[] = localStorage.students ? JSON.parse(localStorage.students) : data;
-
-if (!localStorage.students) {
-    localStorage.students = JSON.stringify(studentArr);
-}
-
-const populateStudentSection = (studentArr: Student[]): void => {
-    if (students) {
-        students.innerHTML = '';
-    }
-
-    studentArr.forEach(student => {
-        if (students) {
-            students.innerHTML += `<tr>
-                <td>${student.firstName}</td>
-                <td>${student.lastName}</td>
-                <td>${student.course}</td>
-                <td>${student.grade}</td>
-                <td><img src=${student.isPassing ? './checkmark-24.png' : 'x-mark-24.png'}></td>`;
-        }
-     
-    })
-}
-
-if (add && addForm) {
-    add.addEventListener('click', (event) => {
-        event.preventDefault();
-
-        add.style.visibility = 'hidden';
-        addForm.style.display = 'contents';
-    })
-
-    addForm.addEventListener('submit', (event) => {
-        event.preventDefault();
-
-        const formData: FormData = new FormData(event.target);
-        const data: Student = Object.fromEntries(formData);
-       
-        studentArr.push(data);  
-        localStorage.setItem('students', JSON.stringify(studentArr));
-        populateStudentSection(studentArr);
-        addForm.style.display = 'none';
-        add.style.visibility = 'visible';
-    })
-}
-
-
-
-
-populateStudentSection(studentArr);
-/* Create a function to add student data to an array as an array of 
-objects and render objects to the page
-
-Be sure your function parameters are given strict types
-
-*/
-
-/* Define your data structure using a custom Type.
-https://www.digitalocean.com/community/tutorials/how-to-create-custom-types-in-typescript
-
-Student
-    First name (string)
-    Last name (string)
-    Course  (string)
-    Grade (number or string)
-    isPassing (boolean value if grade is greater than a D)
-
-    If student is passing, render a green symbol/icon next to their entry in the table
-    If student is not passing, render a red symbol/icon next to their entry in the table
-
-    It is up to you to calculate based on grade (numerical or letter) if student is passing or not
-
-
-    Data should be rendered in the form of a table, i.e.,
-
-    |First Name|Last Name|Course|Grade (as Letter)|Passing?|
-    | Leon     |Kennedy  |RE-101|  B              |   :)   |
-
-
-    Add a button that sorts the data based on Grade (ascending order)
-    Add a button that sorts teh data based on Course (ascending order)
-*/
-
