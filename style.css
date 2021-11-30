@@ -11,3 +11,7 @@ body {
 #add-form {
     display: none;
 }
+
+.sort {
+    cursor: pointer;
+}

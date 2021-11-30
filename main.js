@@ -3,6 +3,14 @@
 const students = document.getElementById('students');
 const add = document.getElementById('add');
 const addForm = document.getElementById('add-form');
+const first = document.getElementById('first');
+const last = document.getElementById('last');
+const course = document.getElementById('course');
+const grade = document.getElementById('grade');
+let firstNameAscend = false;
+let lastNameAscend = false;
+let courseAscend = false;
+let gradeAscend = false;
 const data = [
     {
         "firstName": "Patrick",
@@ -188,6 +196,126 @@ if (add && addForm) {
         populateStudentSection(studentArr);
         addForm.style.display = 'none';
         add.style.visibility = 'visible';
+    });
+}
+if (first) {
+    first.addEventListener('click', (event) => {
+        console.log(firstNameAscend);
+        if (firstNameAscend) {
+            firstNameAscend = false;
+            studentArr.sort((a, b) => {
+                if (a.firstName < b.firstName) {
+                    return 1;
+                }
+                else if (b.firstName < a.firstName) {
+                    return -1;
+                }
+                else {
+                    return 0;
+                }
+            });
+            populateStudentSection(studentArr);
+        }
+        else {
+            firstNameAscend = true;
+            studentArr.sort((a, b) => {
+                if (b.firstName < a.firstName) {
+                    return 1;
+                }
+                else if (a.firstName < b.firstName) {
+                    return -1;
+                }
+                else {
+                    return 0;
+                }
+            });
+            populateStudentSection(studentArr);
+        }
+    });
+}
+if (last) {
+    last.addEventListener('click', (event) => {
+        console.log(lastNameAscend);
+        if (lastNameAscend) {
+            lastNameAscend = false;
+            studentArr.sort((a, b) => {
+                if (a.lastName < b.lastName) {
+                    return 1;
+                }
+                else if (b.lastName < a.lastName) {
+                    return -1;
+                }
+                else {
+                    return 0;
+                }
+            });
+            populateStudentSection(studentArr);
+        }
+        else {
+            lastNameAscend = true;
+            studentArr.sort((a, b) => {
+                if (b.lastName < a.lastName) {
+                    return 1;
+                }
+                else if (a.lastName < b.lastName) {
+                    return -1;
+                }
+                else {
+                    return 0;
+                }
+            });
+            populateStudentSection(studentArr);
+        }
+    });
+}
+if (course) {
+    course.addEventListener('click', (event) => {
+        console.log(courseAscend);
+        if (courseAscend) {
+            courseAscend = false;
+            studentArr.sort((a, b) => {
+                if (a.course < b.course) {
+                    return 1;
+                }
+                else if (b.course < a.course) {
+                    return -1;
+                }
+                else {
+                    return 0;
+                }
+            });
+            populateStudentSection(studentArr);
+        }
+        else {
+            courseAscend = true;
+            studentArr.sort((a, b) => {
+                if (b.course < a.course) {
+                    return 1;
+                }
+                else if (a.course < b.course) {
+                    return -1;
+                }
+                else {
+                    return 0;
+                }
+            });
+            populateStudentSection(studentArr);
+        }
+    });
+}
+if (grade) {
+    grade.addEventListener('click', (event) => {
+        console.log(gradeAscend);
+        if (gradeAscend) {
+            gradeAscend = false;
+            studentArr.sort((a, b) => Number(a.grade) - Number(b.grade));
+            populateStudentSection(studentArr);
+        }
+        else {
+            gradeAscend = true;
+            studentArr.sort((a, b) => Number(b.grade) - Number(a.grade));
+            populateStudentSection(studentArr);
+        }
     });
 }
 populateStudentSection(studentArr);
