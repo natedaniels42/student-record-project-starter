@@ -1,0 +1,22 @@
+{
+  "name": "student-record-project-starter",
+  "version": "1.0.0",
+  "description": "Follow the instructions in the TS file",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/natedaniels42/student-record-project-starter.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/natedaniels42/student-record-project-starter/issues"
+  },
+  "homepage": "https://github.com/natedaniels42/student-record-project-starter#readme",
+  "dependencies": {
+    "browserify": "^17.0.0"
+  }
+}
