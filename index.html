@@ -11,68 +11,101 @@
     <link rel="stylesheet" href="./style.css">
 </head>
 <body>
-    <button id="add">Add Student</button>
-    <button id="filter">Filter Student Results</button><br>
-    <form id="add-form">
-        <label for="firstName">First Name:</label>
-        <p class="error" id="firstNameError">First name is required</p>
-        <input class="input" name="firstName" id="firstName" type="text"><br>
-        <label for="lastName">Last Name:</label>
-        <p class="error" id="lastNameError">Last name is required</p>
-        <input class="input" name="lastName" id="lastName" type="text"><br>
-        <label for="course">Course:</label>
-        <p class="error" id="courseError">Course is required</p>
-        <select class="input" id="course" name="course">
-            <option value=""></option>
-            <option value="English">English</option>
-            <option value="History">History</option>
-            <option value="Art">Art</option>
-            <option value="Band">Band</option>
-            <option value="Literature">Literature</option>
-        </select><br>
-        <label for="grade">Grade:</label>
-        <p class="error" id="gradeError">Grade is required</p>
-        <input class="input" name="grade" id="grade" type="number" min="0" max="100"><br>
-        <label for="isPassing">Is Passing?</label>
-        <p class="error" id="isPassingError">Is passing is required</p>
-        <select class="input" id="isPassing" name="isPassing">
-            <option value=""></option>
-            <option value="true">True</option>
-            <option value="false">False</option>
-        </select><br>
-        <button type="submit">Add Student</button>
-    </form>
-    <form id="filter-form">
-        <label for="firstName">First Name:</label>
-        <input class="input" name="firstName" id="firstName2" type="text"><br>
-        <label for="lastName">Last Name:</label>
-        <input class="input" name="lastName" id="lastName2" type="text"><br>
-        <label for="course">Course:</label>
-        <select class="input" name="course" id="course2">
-            <option value=""></option>
-            <option value="English">English</option>
-            <option value="History">History</option>
-            <option value="Art">Art</option>
-            <option value="Band">Band</option>
-            <option value="Literature">Literature</option>
-        </select><br>
-        <label for="grade">Grade</label>
-        <select class="input" name="grade" id="grade2">
-            <option value=""></option>
-            <option value="A">A</option>
-            <option value="B">B</option>
-            <option value="C">C</option>
-            <option value="D">D</option>
-            <option value="F">F</option>
-        </select><br>
-        <label for="isPassing">Is Passing?</label>
-        <select class="input" name="isPassing" id="isPassing2">
-            <option value=""></option>
-            <option value="true">True</option>
-            <option value="false">False</option>
-        </select><br>
-        <button type="submit">Filter Student Results</button>
-    </form>
+    <div id="form-box">
+
+        <button id="add">Add Student</button>
+        <button id="filter">Filter Student Results</button><br>
+        <form id="add-form">
+            <label for="firstName">First Name:</label>
+            <p class="error" id="firstNameError">First name is required</p>
+            <input class="input" name="firstName" id="firstName" type="text"><br>
+            <label for="lastName">Last Name:</label>
+            <p class="error" id="lastNameError">Last name is required</p>
+            <input class="input" name="lastName" id="lastName" type="text"><br>
+            <label for="course">Course:</label>
+            <p class="error" id="courseError">Course is required</p>
+            <select class="input" id="course" name="course">
+                <option value=""></option>
+                <option value="English">English</option>
+                <option value="History">History</option>
+                <option value="Art">Art</option>
+                <option value="Band">Band</option>
+                <option value="Literature">Literature</option>
+            </select><br>
+            <label for="grade">Grade:</label>
+            <p class="error" id="gradeError">Grade is required</p>
+            <input class="input" name="grade" id="grade" type="number" min="0" max="100"><br>
+            <label for="isPassing">Is Passing?</label>
+            <p class="error" id="isPassingError">Is passing is required</p>
+            <select class="input" id="isPassing" name="isPassing">
+                <option value=""></option>
+                <option value="true">True</option>
+                <option value="false">False</option>
+            </select><br>
+            <button type="submit">Add Student</button>
+        </form>
+        <form id="filter-form">
+            <label for="firstName">First Name:</label>
+            <input class="input" name="firstName" id="firstName2" type="text"><br>
+            <label for="lastName">Last Name:</label>
+            <input class="input" name="lastName" id="lastName2" type="text"><br>
+            <label for="course">Course:</label>
+            <select class="input" name="course" id="course2">
+                <option value=""></option>
+                <option value="English">English</option>
+                <option value="History">History</option>
+                <option value="Art">Art</option>
+                <option value="Band">Band</option>
+                <option value="Literature">Literature</option>
+            </select><br>
+            <label for="grade">Grade</label>
+            <select class="input" name="grade" id="grade2">
+                <option value=""></option>
+                <option value="A">A</option>
+                <option value="B">B</option>
+                <option value="C">C</option>
+                <option value="D">D</option>
+                <option value="F">F</option>
+            </select><br>
+            <label for="isPassing">Is Passing?</label>
+            <select class="input" name="isPassing" id="isPassing2">
+                <option value=""></option>
+                <option value="true">True</option>
+                <option value="false">False</option>
+            </select><br>
+            <button type="submit">Filter Student Results</button>
+        </form>
+        <form id="edit-form">
+            <label for="firstName">First Name:</label>
+            <p class="error" id="firstNameError3">First name is required</p>
+            <input class="input" name="firstName" id="firstName3" type="text"><br>
+            <label for="lastName">Last Name:</label>
+            <p class="error" id="lastNameError3">Last name is required</p>
+            <input class="input" name="lastName" id="lastName3" type="text"><br>
+            <label for="course">Course:</label>
+            <p class="error" id="courseError3">Course is required</p>
+            <select class="input" id="course3" name="course">
+                <option value=""></option>
+                <option value="English">English</option>
+                <option value="History">History</option>
+                <option value="Art">Art</option>
+                <option value="Band">Band</option>
+                <option value="Literature">Literature</option>
+            </select><br>
+            <label for="grade">Grade:</label>
+            <p class="error" id="gradeError3">Grade is required</p>
+            <input class="input" name="grade" id="grade3" type="number" min="0" max="100"><br>
+            <label for="isPassing">Is Passing?</label>
+            <p class="error" id="isPassingError3">Is passing is required</p>
+            <select class="input" id="isPassing3" name="isPassing">
+                <option value=""></option>
+                <option value="true">True</option>
+                <option value="false">False</option>
+            </select><br>
+            <button type="submit">Edit Student</button>
+            <button id="cancel">Cancel Edit</button>
+        </form>
+    </div>
     <table id="table">
         <thead>
             <tr>
@@ -81,6 +114,8 @@
                 <th class="sort" id="course-category">Course</th>
                 <th class="sort" id="grade-category">Grade</th>
                 <th>Is Passing</th>
+                <th></th>
+                <th></th>
             </tr>
         </thead>
         <tbody id="students">

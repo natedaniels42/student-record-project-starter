@@ -12,11 +12,7 @@ body {
     margin: 50px;
 }
 
-#add-form {
-    display: none;
-}
-
-#filter-form {
+#add-form, #filter-form, #edit-form {
     display: none;
 }
 
@@ -40,7 +36,7 @@ tr:nth-child(2n) {
     background-color: lightgrey;
 }
 
-th {
+thead {
     background-color: lightgrey;
 }
 
@@ -91,4 +87,9 @@ input, select {
 .error {
     color: red;
     display: none;
+}
+
+#form-box {
+    position: relative;
+    left: 12.5%;
 }
