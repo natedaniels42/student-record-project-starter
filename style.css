@@ -4,14 +4,91 @@
     padding: 0;
 }
 
+html {
+    font-family: 'Raleway', sans-serif;
+}
+
 body {
-    background-color: antiquewhite;
+    margin: 50px;
 }
 
 #add-form {
     display: none;
 }
 
+#filter-form {
+    display: none;
+}
+
 .sort {
     cursor: pointer;
+}
+
+table {
+    width: 75%;
+    margin: 10px auto;
+    box-shadow: 5px 5px 5px black, inset 1px 1px 5px black;
+    border-radius: 10px;
+}
+
+
+table, tr, td, th {
+    /* border: 2px solid black; */
+}
+
+tr:nth-child(2n) {
+    background-color: lightgrey;
+}
+
+th {
+    background-color: lightgrey;
+}
+
+th, td {
+    padding: 10px 20px;
+}
+
+.sort:hover {
+    background-color: grey;
+    color: white;
+    opacity: .7;
+    transition: .5s background-color, .5s color;
+}
+
+button {
+    border: none;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: rgb(117, 76, 156);
+    color: white;
+    cursor: pointer;
+    box-shadow: 1px 1px 5px rgba(117, 76, 156, .8);
+}
+
+button:hover {
+    opacity: .5;
+}
+
+button:active {
+    box-shadow: inset 1px 1px 5px rgba(117, 76, 156, .8);
+}
+
+#add, #filter {
+    margin: 10px;
+}
+
+#add-form button, #filter-form button {
+    margin: 10px;
+}
+
+input, select {
+    padding: 5px;
+    border-radius: 5px;
+    margin: 5px;
+    background-color: rgb(240,240,240);
+}
+
+.error {
+    color: red;
+    display: none;
 }

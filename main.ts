@@ -1,12 +1,31 @@
 // import data from './students.json';
 
-const students: HTMLElement | null = document.getElementById('students');
-const add: HTMLElement | null = document.getElementById('add');
-const addForm: HTMLElement | null = document.getElementById('add-form'); 
-const first: HTMLElement | null = document.getElementById('first');
-const last: HTMLElement | null = document.getElementById('last');
-const course: HTMLElement | null = document.getElementById('course');
-const grade: HTMLElement | null = document.getElementById('grade');
+const students: HTMLElement = document.getElementById('students') as HTMLElement;
+const add: HTMLElement = document.getElementById('add') as HTMLElement;
+const addForm: HTMLElement = document.getElementById('add-form') as HTMLElement; 
+const filter: HTMLElement = document.getElementById('filter') as HTMLElement;
+const filterForm: HTMLElement = document.getElementById('filter-form') as HTMLElement;
+const inputs: HTMLCollectionOf<Element> = document.getElementsByClassName('input');
+const first: HTMLElement = document.getElementById('first') as HTMLElement;
+const last: HTMLElement = document.getElementById('last') as HTMLElement;
+const courseCategory: HTMLElement = document.getElementById('course-category') as HTMLElement;
+const gradeCategory: HTMLElement = document.getElementById('grade-category') as HTMLElement;
+const firstName: HTMLInputElement = document.getElementById('firstName') as HTMLInputElement;
+const lastName: HTMLInputElement = document.getElementById('lastName') as HTMLInputElement;
+const course: HTMLInputElement = document.getElementById('course') as HTMLInputElement;
+const grade: HTMLInputElement = document.getElementById('grade') as HTMLInputElement;
+const isPassing: HTMLInputElement = document.getElementById('isPassing') as HTMLInputElement;
+const firstName2: HTMLInputElement = document.getElementById('firstName2') as HTMLInputElement;
+const lastName2: HTMLInputElement = document.getElementById('lastName2') as HTMLInputElement;
+const course2: HTMLInputElement = document.getElementById('course2') as HTMLInputElement;
+const grade2: HTMLInputElement = document.getElementById('grade2') as HTMLInputElement;
+const isPassing2: HTMLInputElement = document.getElementById('isPassing2') as HTMLInputElement;
+const firstNameError: HTMLElement = document.getElementById('firstNameError') as HTMLElement;
+const lastNameError: HTMLElement = document.getElementById('lastNameError') as HTMLElement;
+const courseError: HTMLElement = document.getElementById('courseError') as HTMLElement;
+const gradeError: HTMLElement = document.getElementById('gradeError') as HTMLElement;
+const isPassingError: HTMLElement = document.getElementById('isPassingError') as HTMLElement;
+const errors: HTMLCollectionOf<Element> = document.getElementsByClassName('error');
 let firstNameAscend: boolean = false;
 let lastNameAscend: boolean = false;
 let courseAscend: boolean = false;
@@ -17,7 +36,7 @@ type Student = {
     lastName: string;
     course: string;
     grade: number | string;
-    isPassing: boolean;
+    isPassing: string | boolean;
 }
 
 const data: Student[] = [
@@ -181,17 +200,18 @@ const populateStudentSection = (studentArr: Student[]): void => {
                 <td>${student.lastName}</td>
                 <td>${student.course}</td>
                 <td>${student.grade}</td>
-                <td><img src=${student.isPassing ? './checkmark-24.png' : 'x-mark-24.png'}></td>
+                <td><img src=${student.isPassing === true || student.isPassing === 'true' ? './checkmark-24.png' : 'x-mark-24.png'}></td>
                 <td><button class="delete" id=${i}>Delete</button>`;
         }
      
     })
 
-    const deleteButtons: HTMLCollectionOf<Element> | null = document.getElementsByClassName('delete');
+    const deleteButtons: HTMLCollectionOf<Element> = document.getElementsByClassName('delete') as HTMLCollectionOf<Element>;
 
     for (let i = 0; i < deleteButtons.length; i++) {
         deleteButtons[i].addEventListener('click', (event) => {
-            studentArr.splice(Number(event.target.id), 1);
+            const target: HTMLElement = event.target as HTMLElement;
+            studentArr.splice(Number(target.id), 1);
 
             populateStudentSection(studentArr);
             localStorage.setItem('students', JSON.stringify(studentArr));
@@ -199,25 +219,162 @@ const populateStudentSection = (studentArr: Student[]): void => {
     }
 }
 
-if (add && addForm) {
+firstName.addEventListener('keydown', (event) => {
+    firstNameError.innerHTML = '';
+})
+
+lastName.addEventListener('keydown', (event) => {
+    lastNameError.innerHTML = '';
+})
+
+course.addEventListener('change', (event) => {
+    courseError.innerHTML = '';
+})
+
+grade.addEventListener('change', (event) => {
+    gradeError.innerHTML = '';
+})
+
+isPassing.addEventListener('change', (event) => {
+    isPassingError.innerHTML = '';
+})
+
+if (add && addForm && filter && inputs) {
     add.addEventListener('click', (event) => {
         event.preventDefault();
 
-        add.style.visibility = 'hidden';
-        addForm.style.display = 'contents';
+        if (add.innerHTML === 'Add Student') {
+            addForm.style.display = 'contents';
+            filter.style.visibility = 'hidden';
+            add.innerHTML = 'Close Add';
+        } else {
+            addForm.style.display = 'none';
+            filter.style.visibility = 'visible';
+            add.innerHTML = 'Add Student';
+            firstName.value = '';
+            lastName.value = '';
+            course.value = '';
+            grade.value = '';
+            isPassing.value = '';
+        }
     })
+
+    for (let i = 0; i < inputs.length; i++) {
+        inputs[i].addEventListener('change', (event) => {
+            console.log(event.target);
+        })
+    }
 
     addForm.addEventListener('submit', (event) => {
         event.preventDefault();
 
-        const formData: FormData = new FormData(event.target);
-        const data: Student = Object.fromEntries(formData);
-       
-        studentArr.push(data);  
-        localStorage.setItem('students', JSON.stringify(studentArr));
-        populateStudentSection(studentArr);
-        addForm.style.display = 'none';
+        const formData: FormData = new FormData(event.target as HTMLFormElement);
+        const data: Student = Object.fromEntries(formData) as Student;
+
+        if (!data.firstName || !data.lastName || !data.course || !data.grade || !data.isPassing) {
+            if (!data.firstName && firstNameError) {
+                firstNameError.style.display = 'contents';
+            }
+            if (!data.lastName && lastNameError) {
+                lastNameError.style.display = 'contents';
+            }
+            if (!data.course && courseError) {
+                courseError.style.display = 'contents';
+            }
+            if (!data.grade && gradeError) {
+                gradeError.style.display = 'contents';
+            }
+            if (!data.isPassing && isPassingError) {
+                isPassingError.style.display = 'contents';
+            }
+        } else {
+            studentArr.push(data);  
+            localStorage.setItem('students', JSON.stringify(studentArr));
+            populateStudentSection(studentArr);
+            
+            addForm.style.display = 'none';
+            add.innerHTML = 'Add Student';
+            filter.style.visibility = 'visible';
+            firstName.value = '';
+            lastName.value = '';
+            course.value = '';
+            grade.value = '';
+            isPassing.value = '';
+        }
+    })
+}
+
+if (filter && filterForm && add) {
+    filter.addEventListener('click', (event) => {
+        if (filter.innerHTML === 'Filter Student Results') {
+            filterForm.style.display = 'contents';
+            add.style.visibility = 'hidden';
+            filter.innerHTML = 'Close Filter';
+        } else {
+            filterForm.style.display = 'none';
+            add.style.visibility = 'visible';
+            filter.innerHTML = 'Filter Student Results';
+            firstName2.value = '';
+            lastName2.value = '';
+            course2.value = '';
+            grade2.value = '';
+            isPassing2.value = '';
+        }
+        
+    })
+
+    filterForm.addEventListener('submit', (event) => {
+        event.preventDefault();
+
+        const formData: FormData = new FormData(event.target as HTMLFormElement);
+        const data: {
+            firstName?: string,
+            lastName?: string,
+            course?: string,
+            grade?: string | number,
+            isPassing?: boolean
+        } = Object.fromEntries(formData);
+        let currentStudents: Student[] = studentArr;
+        console.log(currentStudents);
+        for (let [key, value] of Object.entries(data)) {
+            console.log([key, value]);
+            if (key === 'grade' && value !== '') {
+                currentStudents = currentStudents.filter(student => {
+                    if (value === 'A' && Number(student.grade) >= 90) {
+                        return student;
+                    } else if (value === 'B' && Number(student.grade) >= 80 && Number(student.grade < 90)) {
+                        return student;
+                    } else if (value === 'C' && Number(student.grade) >= 70 && Number(student.grade < 80)) {
+                        return student;
+                    } else if (value === 'D' && Number(student.grade) >= 60 && Number(student.grade < 70)) {
+                        return student;
+                    } else if (value === 'F' && Number(student.grade) < 60) {
+                        return student;
+                    }
+                })
+            } else if (key === 'isPassing' && value !== '') {
+                currentStudents = currentStudents.filter(student => {
+                    if (value === 'true' && (student.isPassing === true || student.isPassing === 'true')) {
+                        return student;
+                    } else if (value === 'false' && (student.isPassing === false || student.isPassing === 'false')) {
+                        return student;
+                    }
+                })
+            } else {
+                if (value !== '') {
+                    currentStudents = currentStudents.filter(student  => student[key] === value);
+                }
+            } 
+        }
+        populateStudentSection(currentStudents);
+        filterForm.style.display = 'none';
+        filter.innerHTML = 'Filter Student Results';
         add.style.visibility = 'visible';
+        firstName2.value = '';
+        lastName2.value = '';
+        course2.value = '';
+        grade2.value = '';
+        isPassing2.value = '';
     })
 }
 
@@ -283,8 +440,8 @@ if (last) {
     });
 }
 
-if (course) {
-    course.addEventListener('click', (event) => {
+if (courseCategory) {
+    courseCategory.addEventListener('click', (event) => {
         console.log(courseAscend);
         if (courseAscend) {
             courseAscend = false;
@@ -314,8 +471,8 @@ if (course) {
     });
 }
 
-if (grade) {
-    grade.addEventListener('click', (event) => {
+if (gradeCategory) {
+    gradeCategory.addEventListener('click', (event) => {
         console.log(gradeAscend);
         if (gradeAscend) {
             gradeAscend = false;

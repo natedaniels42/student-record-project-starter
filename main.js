@@ -3,10 +3,29 @@
 const students = document.getElementById('students');
 const add = document.getElementById('add');
 const addForm = document.getElementById('add-form');
+const filter = document.getElementById('filter');
+const filterForm = document.getElementById('filter-form');
+const inputs = document.getElementsByClassName('input');
 const first = document.getElementById('first');
 const last = document.getElementById('last');
+const courseCategory = document.getElementById('course-category');
+const gradeCategory = document.getElementById('grade-category');
+const firstName = document.getElementById('firstName');
+const lastName = document.getElementById('lastName');
 const course = document.getElementById('course');
 const grade = document.getElementById('grade');
+const isPassing = document.getElementById('isPassing');
+const firstName2 = document.getElementById('firstName2');
+const lastName2 = document.getElementById('lastName2');
+const course2 = document.getElementById('course2');
+const grade2 = document.getElementById('grade2');
+const isPassing2 = document.getElementById('isPassing2');
+const firstNameError = document.getElementById('firstNameError');
+const lastNameError = document.getElementById('lastNameError');
+const courseError = document.getElementById('courseError');
+const gradeError = document.getElementById('gradeError');
+const isPassingError = document.getElementById('isPassingError');
+const errors = document.getElementsByClassName('error');
 let firstNameAscend = false;
 let lastNameAscend = false;
 let courseAscend = false;
@@ -168,34 +187,165 @@ const populateStudentSection = (studentArr) => {
                 <td>${student.lastName}</td>
                 <td>${student.course}</td>
                 <td>${student.grade}</td>
-                <td><img src=${student.isPassing ? './checkmark-24.png' : 'x-mark-24.png'}></td>
+                <td><img src=${student.isPassing === true || student.isPassing === 'true' ? './checkmark-24.png' : 'x-mark-24.png'}></td>
                 <td><button class="delete" id=${i}>Delete</button>`;
         }
     });
     const deleteButtons = document.getElementsByClassName('delete');
     for (let i = 0; i < deleteButtons.length; i++) {
         deleteButtons[i].addEventListener('click', (event) => {
-            studentArr.splice(Number(event.target.id), 1);
+            const target = event.target;
+            studentArr.splice(Number(target.id), 1);
             populateStudentSection(studentArr);
             localStorage.setItem('students', JSON.stringify(studentArr));
         });
     }
 };
-if (add && addForm) {
+firstName.addEventListener('keydown', (event) => {
+    firstNameError.innerHTML = '';
+});
+lastName.addEventListener('keydown', (event) => {
+    lastNameError.innerHTML = '';
+});
+course.addEventListener('change', (event) => {
+    courseError.innerHTML = '';
+});
+grade.addEventListener('change', (event) => {
+    gradeError.innerHTML = '';
+});
+isPassing.addEventListener('change', (event) => {
+    isPassingError.innerHTML = '';
+});
+if (add && addForm && filter && inputs) {
     add.addEventListener('click', (event) => {
         event.preventDefault();
-        add.style.visibility = 'hidden';
-        addForm.style.display = 'contents';
+        if (add.innerHTML === 'Add Student') {
+            addForm.style.display = 'contents';
+            filter.style.visibility = 'hidden';
+            add.innerHTML = 'Close Add';
+        }
+        else {
+            addForm.style.display = 'none';
+            filter.style.visibility = 'visible';
+            add.innerHTML = 'Add Student';
+            firstName.value = '';
+            lastName.value = '';
+            course.value = '';
+            grade.value = '';
+            isPassing.value = '';
+        }
     });
+    for (let i = 0; i < inputs.length; i++) {
+        inputs[i].addEventListener('change', (event) => {
+            console.log(event.target);
+        });
+    }
     addForm.addEventListener('submit', (event) => {
         event.preventDefault();
         const formData = new FormData(event.target);
         const data = Object.fromEntries(formData);
-        studentArr.push(data);
-        localStorage.setItem('students', JSON.stringify(studentArr));
-        populateStudentSection(studentArr);
-        addForm.style.display = 'none';
+        if (!data.firstName || !data.lastName || !data.course || !data.grade || !data.isPassing) {
+            if (!data.firstName && firstNameError) {
+                firstNameError.style.display = 'contents';
+            }
+            if (!data.lastName && lastNameError) {
+                lastNameError.style.display = 'contents';
+            }
+            if (!data.course && courseError) {
+                courseError.style.display = 'contents';
+            }
+            if (!data.grade && gradeError) {
+                gradeError.style.display = 'contents';
+            }
+            if (!data.isPassing && isPassingError) {
+                isPassingError.style.display = 'contents';
+            }
+        }
+        else {
+            studentArr.push(data);
+            localStorage.setItem('students', JSON.stringify(studentArr));
+            populateStudentSection(studentArr);
+            addForm.style.display = 'none';
+            add.innerHTML = 'Add Student';
+            filter.style.visibility = 'visible';
+            firstName.value = '';
+            lastName.value = '';
+            course.value = '';
+            grade.value = '';
+            isPassing.value = '';
+        }
+    });
+}
+if (filter && filterForm && add) {
+    filter.addEventListener('click', (event) => {
+        if (filter.innerHTML === 'Filter Student Results') {
+            filterForm.style.display = 'contents';
+            add.style.visibility = 'hidden';
+            filter.innerHTML = 'Close Filter';
+        }
+        else {
+            filterForm.style.display = 'none';
+            add.style.visibility = 'visible';
+            filter.innerHTML = 'Filter Student Results';
+            firstName2.value = '';
+            lastName2.value = '';
+            course2.value = '';
+            grade2.value = '';
+            isPassing2.value = '';
+        }
+    });
+    filterForm.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const formData = new FormData(event.target);
+        const data = Object.fromEntries(formData);
+        let currentStudents = studentArr;
+        console.log(currentStudents);
+        for (let [key, value] of Object.entries(data)) {
+            console.log([key, value]);
+            if (key === 'grade' && value !== '') {
+                currentStudents = currentStudents.filter(student => {
+                    if (value === 'A' && Number(student.grade) >= 90) {
+                        return student;
+                    }
+                    else if (value === 'B' && Number(student.grade) >= 80 && Number(student.grade < 90)) {
+                        return student;
+                    }
+                    else if (value === 'C' && Number(student.grade) >= 70 && Number(student.grade < 80)) {
+                        return student;
+                    }
+                    else if (value === 'D' && Number(student.grade) >= 60 && Number(student.grade < 70)) {
+                        return student;
+                    }
+                    else if (value === 'F' && Number(student.grade) < 60) {
+                        return student;
+                    }
+                });
+            }
+            else if (key === 'isPassing' && value !== '') {
+                currentStudents = currentStudents.filter(student => {
+                    if (value === 'true' && (student.isPassing === true || student.isPassing === 'true')) {
+                        return student;
+                    }
+                    else if (value === 'false' && (student.isPassing === false || student.isPassing === 'false')) {
+                        return student;
+                    }
+                });
+            }
+            else {
+                if (value !== '') {
+                    currentStudents = currentStudents.filter(student => student[key] === value);
+                }
+            }
+        }
+        populateStudentSection(currentStudents);
+        filterForm.style.display = 'none';
+        filter.innerHTML = 'Filter Student Results';
         add.style.visibility = 'visible';
+        firstName2.value = '';
+        lastName2.value = '';
+        course2.value = '';
+        grade2.value = '';
+        isPassing2.value = '';
     });
 }
 if (first) {
@@ -268,8 +418,8 @@ if (last) {
         }
     });
 }
-if (course) {
-    course.addEventListener('click', (event) => {
+if (courseCategory) {
+    courseCategory.addEventListener('click', (event) => {
         console.log(courseAscend);
         if (courseAscend) {
             courseAscend = false;
@@ -303,8 +453,8 @@ if (course) {
         }
     });
 }
-if (grade) {
-    grade.addEventListener('click', (event) => {
+if (gradeCategory) {
+    gradeCategory.addEventListener('click', (event) => {
         console.log(gradeAscend);
         if (gradeAscend) {
             gradeAscend = false;
