@@ -1,12 +1,9 @@
 "use strict";
 // import data from './students.json';
 const students = document.getElementById('students');
-const add = document.getElementById('add');
 const addForm = document.getElementById('add-form');
 const filter = document.getElementById('filter');
 const filterForm = document.getElementById('filter-form');
-const editForm = document.getElementById('edit-form');
-const cancel = document.getElementById('cancel');
 const inputs = document.getElementsByClassName('input');
 const first = document.getElementById('first');
 const last = document.getElementById('last');
@@ -22,26 +19,15 @@ const lastName2 = document.getElementById('lastName2');
 const course2 = document.getElementById('course2');
 const grade2 = document.getElementById('grade2');
 const isPassing2 = document.getElementById('isPassing2');
-const firstName3 = document.getElementById('firstName3');
-const lastName3 = document.getElementById('lastName3');
-const course3 = document.getElementById('course3');
-const grade3 = document.getElementById('grade3');
-const isPassing3 = document.getElementById('isPassing3');
 const firstNameError = document.getElementById('firstNameError');
 const lastNameError = document.getElementById('lastNameError');
 const courseError = document.getElementById('courseError');
 const gradeError = document.getElementById('gradeError');
 const isPassingError = document.getElementById('isPassingError');
-const firstNameError3 = document.getElementById('firstNameError3');
-const lastNameError3 = document.getElementById('lastNameError3');
-const courseError3 = document.getElementById('courseError3');
-const gradeError3 = document.getElementById('gradeError3');
-const isPassingError3 = document.getElementById('isPassingError3');
 let firstNameAscend = false;
 let lastNameAscend = false;
 let courseAscend = false;
 let gradeAscend = false;
-let currentIndex = 0;
 const data = [
     {
         "firstName": "Patrick",
@@ -199,7 +185,7 @@ const populateStudentSection = (studentArr) => {
                 <td>${student.lastName}</td>
                 <td>${student.course}</td>
                 <td>${student.grade}</td>
-                <td><img src=${student.isPassing === true || student.isPassing === 'true' ? './checkmark-24.png' : 'x-mark-24.png'}></td>
+                <td><img src=${student.isPassing === true || student.isPassing === 'true' ? 'smile.png' : 'poop.png'} width="24px"></td>
                 <td><button class="edit" id=${i}>Edit</button></td>
                 <td><button class="delete" id=${i}>Delete</button>`;
         }
@@ -214,23 +200,135 @@ const populateStudentSection = (studentArr) => {
         });
     }
     const editButtons = document.getElementsByClassName('edit');
-    for (let i = 0; i < editButtons.length; i++) {
-        editButtons[i].addEventListener('click', (event) => {
-            const current = event.target;
-            currentIndex = Number(current.id);
-            editForm.style.display = 'contents';
-            addForm.style.display = 'none';
-            filterForm.style.display = 'none';
-            add.style.visibility = 'hidden';
-            filter.style.visibility = 'hidden';
-            filter.innerHTML = 'Filter Student Results';
-            add.innerHTML = 'Add Student';
-            firstName3.value = studentArr[currentIndex].firstName;
-            lastName3.value = studentArr[currentIndex].lastName;
-            course3.value = studentArr[currentIndex].course;
-            grade3.value = String(studentArr[currentIndex].grade);
-            isPassing3.value = String(studentArr[currentIndex].isPassing);
+    const editListener = (event) => {
+        const currentIndex = Number(event.target.id);
+        const currentStudent = studentArr[currentIndex];
+        const current = event.target.closest('tr');
+        current.innerHTML = `<form id="edit-form">
+            <td>
+                <label for="firstName">First Name:</label>
+                <p class="error" id="firstNameError3">First name is required</p>
+                <input class="input" value=${currentStudent.firstName} name="firstName" id="firstName3" type="text"><br>
+            </td>
+            <td>
+                <label for="lastName">Last Name:</label>
+                <p class="error" id="lastNameError3">Last name is required</p>
+                <input class="input" value=${currentStudent.lastName} name="lastName" id="lastName3" type="text"><br>
+            </td>
+            <td>
+                <label for="course">Course:</label>
+                <p class="error" id="courseError3">Course is required</p>
+                <select class="input" id="course3" value=${currentStudent.course} name="course">
+                    <option value=""></option>
+                    <option value="English">English</option>
+                    <option value="History">History</option>
+                    <option value="Art">Art</option>
+                    <option value="Band">Band</option>
+                    <option value="Literature">Literature</option>
+                </select>
+            </td>
+            <td>
+                <label for="grade">Grade:</label>
+                <p class="error" id="gradeError3">Grade is required</p>
+                <input class="input" name="grade" value=${currentStudent.grade} id="grade3" type="number" min="0" max="100"><br>
+            </td>
+            <td>
+                <label for="isPassing">Is Passing?</label>
+                <p class="error" id="isPassingError3">Is passing is required</p>
+                <select class="input" id="isPassing3" value=${currentStudent.isPassing} name="isPassing">
+                    <option value=""></option>
+                    <option value="true">True</option>
+                    <option value="false">False</option>
+                </select>
+            </td>
+            <td>
+                <button type="submit" id="edit-submit">Edit Student</button>
+            </td>
+            <td>
+                <button id="cancel">Cancel Edit</button>
+            </td>
+        </form>`;
+        const editSubmit = document.getElementById('edit-submit');
+        const cancel = document.getElementById('cancel');
+        const firstName3 = document.getElementById('firstName3');
+        const lastName3 = document.getElementById('lastName3');
+        const course3 = document.getElementById('course3');
+        const grade3 = document.getElementById('grade3');
+        const isPassing3 = document.getElementById('isPassing3');
+        const firstNameError3 = document.getElementById('firstNameError3');
+        const lastNameError3 = document.getElementById('lastNameError3');
+        const courseError3 = document.getElementById('courseError3');
+        const gradeError3 = document.getElementById('gradeError3');
+        const isPassingError3 = document.getElementById('isPassingError3');
+        firstName3.addEventListener('keydown', (event) => {
+            firstNameError3.style.display = 'none';
         });
+        lastName3.addEventListener('keydown', (event) => {
+            lastNameError3.style.display = 'none';
+        });
+        course3.addEventListener('change', (event) => {
+            courseError3.style.display = 'none';
+        });
+        grade3.addEventListener('change', (event) => {
+            gradeError3.style.display = 'none';
+        });
+        isPassing3.addEventListener('change', (event) => {
+            isPassingError3.style.display = 'none';
+        });
+        editSubmit.addEventListener('click', (event) => {
+            event.preventDefault();
+            const data = {
+                firstName: firstName3.value,
+                lastName: lastName3.value,
+                course: course3.value,
+                grade: grade3.value,
+                isPassing: isPassing3.value
+            };
+            if (!data.firstName || !data.lastName || !data.course || !data.grade || !data.isPassing) {
+                if (!data.firstName) {
+                    firstNameError3.style.display = 'contents';
+                }
+                if (!data.lastName) {
+                    lastNameError3.style.display = 'contents';
+                }
+                if (!data.course) {
+                    courseError3.style.display = 'contents';
+                }
+                if (!data.grade) {
+                    gradeError3.style.display = 'contents';
+                }
+                if (!data.isPassing) {
+                    isPassingError3.style.display = 'contents';
+                }
+            }
+            else {
+                studentArr[currentIndex] = data;
+                localStorage.setItem('students', JSON.stringify(studentArr));
+                populateStudentSection(studentArr);
+                filter.style.visibility = 'visible';
+            }
+        });
+        cancel.addEventListener('click', (event) => {
+            current.innerHTML = `<td>${currentStudent.firstName}</td>
+            <td>${currentStudent.lastName}</td>
+            <td>${currentStudent.course}</td>
+            <td>${currentStudent.grade}</td>
+            <td><img src=${currentStudent.isPassing === true || currentStudent.isPassing === 'true' ? 'smile.png' : 'poop.png'} width="24px"></td>
+            <td><button class="edit" id=${currentIndex}>Edit</button></td>
+            <td><button class="delete" id=${currentIndex}>Delete</button>`;
+            const editButton = document.getElementsByClassName('edit')[currentIndex];
+            const deleteButton = document.getElementsByClassName('delete')[currentIndex];
+            editButton.addEventListener('click', editListener);
+            deleteButton.addEventListener('click', (event) => {
+                const target = event.target;
+                studentArr.splice(Number(target.id), 1);
+                populateStudentSection(studentArr);
+                localStorage.setItem('students', JSON.stringify(studentArr));
+            });
+        });
+    };
+    for (let i = 0; i < editButtons.length; i++) {
+        editButtons[i].addEventListener('click', editListener);
     }
 };
 firstName.addEventListener('keydown', (event) => {
@@ -248,44 +346,6 @@ grade.addEventListener('change', (event) => {
 isPassing.addEventListener('change', (event) => {
     isPassingError.style.display = 'none';
 });
-firstName3.addEventListener('keydown', (event) => {
-    firstNameError3.style.display = 'none';
-});
-lastName3.addEventListener('keydown', (event) => {
-    lastNameError3.style.display = 'none';
-});
-course3.addEventListener('change', (event) => {
-    courseError3.style.display = 'none';
-});
-grade3.addEventListener('change', (event) => {
-    gradeError3.style.display = 'none';
-});
-isPassing3.addEventListener('change', (event) => {
-    isPassingError3.style.display = 'none';
-});
-add.addEventListener('click', (event) => {
-    event.preventDefault();
-    if (add.innerHTML === 'Add Student') {
-        addForm.style.display = 'contents';
-        filter.style.visibility = 'hidden';
-        add.innerHTML = 'Close Add';
-    }
-    else {
-        addForm.style.display = 'none';
-        filter.style.visibility = 'visible';
-        add.innerHTML = 'Add Student';
-        firstName.value = '';
-        lastName.value = '';
-        course.value = '';
-        grade.value = '';
-        isPassing.value = '';
-    }
-});
-for (let i = 0; i < inputs.length; i++) {
-    inputs[i].addEventListener('change', (event) => {
-        console.log(event.target);
-    });
-}
 addForm.addEventListener('submit', (event) => {
     event.preventDefault();
     const formData = new FormData(event.target);
@@ -308,11 +368,10 @@ addForm.addEventListener('submit', (event) => {
         }
     }
     else {
-        studentArr.push(data);
+        studentArr.unshift(data);
         localStorage.setItem('students', JSON.stringify(studentArr));
         populateStudentSection(studentArr);
         addForm.style.display = 'none';
-        add.innerHTML = 'Add Student';
         filter.style.visibility = 'visible';
         firstName.value = '';
         lastName.value = '';
@@ -324,12 +383,10 @@ addForm.addEventListener('submit', (event) => {
 filter.addEventListener('click', (event) => {
     if (filter.innerHTML === 'Filter Student Results') {
         filterForm.style.display = 'contents';
-        add.style.visibility = 'hidden';
         filter.innerHTML = 'Close Filter';
     }
     else {
         filterForm.style.display = 'none';
-        add.style.visibility = 'visible';
         filter.innerHTML = 'Filter Student Results';
         firstName2.value = '';
         lastName2.value = '';
@@ -343,9 +400,7 @@ filterForm.addEventListener('submit', (event) => {
     const formData = new FormData(event.target);
     const data = Object.fromEntries(formData);
     let currentStudents = studentArr;
-    console.log(currentStudents);
     for (let [key, value] of Object.entries(data)) {
-        console.log([key, value]);
         if (key === 'grade' && value !== '') {
             currentStudents = currentStudents.filter(student => {
                 if (value === 'A' && Number(student.grade) >= 90) {
@@ -388,48 +443,44 @@ filterForm.addEventListener('submit', (event) => {
     populateStudentSection(currentStudents);
     filterForm.style.display = 'none';
     filter.innerHTML = 'Filter Student Results';
-    add.style.visibility = 'visible';
     firstName2.value = '';
     lastName2.value = '';
     course2.value = '';
     grade2.value = '';
     isPassing2.value = '';
 });
-editForm.addEventListener('submit', (event) => {
-    event.preventDefault();
-    const formData = new FormData(event.target);
-    const data = Object.fromEntries(formData);
-    if (!data.firstName || !data.lastName || !data.course || !data.grade || !data.isPassing) {
-        if (!data.firstName) {
-            firstNameError3.style.display = 'contents';
-        }
-        if (!data.lastName) {
-            lastNameError3.style.display = 'contents';
-        }
-        if (!data.course) {
-            courseError3.style.display = 'contents';
-        }
-        if (!data.grade) {
-            gradeError3.style.display = 'contents';
-        }
-        if (!data.isPassing) {
-            isPassingError3.style.display = 'contents';
-        }
-    }
-    else {
-        studentArr[currentIndex] = data;
-        editForm.style.display = 'none';
-        localStorage.setItem('students', JSON.stringify(studentArr));
-        populateStudentSection(studentArr);
-        add.style.visibility = 'visible';
-        filter.style.visibility = 'visible';
-    }
-});
-cancel.addEventListener('click', (event) => {
-    editForm.style.display = 'none';
-});
+// editForm.addEventListener('submit', (event) => {
+//     event.preventDefault();
+//     const formData: FormData = new FormData(event.target as HTMLFormElement);
+//     const data: Student = Object.fromEntries(formData) as Student;
+//     if (!data.firstName || !data.lastName || !data.course || !data.grade || !data.isPassing) {
+//         if (!data.firstName) {
+//             firstNameError3.style.display = 'contents';
+//         }
+//         if (!data.lastName) {
+//             lastNameError3.style.display = 'contents';
+//         }
+//         if (!data.course) {
+//             courseError3.style.display = 'contents';
+//         }
+//         if (!data.grade) {
+//             gradeError3.style.display = 'contents';
+//         }
+//         if (!data.isPassing) {
+//             isPassingError3.style.display = 'contents';
+//         }
+//     } else {
+//         studentArr[currentIndex] = data;
+//         editForm.style.display = 'none';
+//         localStorage.setItem('students', JSON.stringify(studentArr));
+//         populateStudentSection(studentArr);
+//         filter.style.visibility = 'visible';
+//     }
+// })
+// cancel.addEventListener('click', (event) => {
+//     editForm.style.display = 'none';
+// })
 first.addEventListener('click', (event) => {
-    console.log(firstNameAscend);
     if (firstNameAscend) {
         firstNameAscend = false;
         studentArr.sort((a, b) => {
@@ -462,7 +513,6 @@ first.addEventListener('click', (event) => {
     }
 });
 last.addEventListener('click', (event) => {
-    console.log(lastNameAscend);
     if (lastNameAscend) {
         lastNameAscend = false;
         studentArr.sort((a, b) => {
@@ -495,7 +545,6 @@ last.addEventListener('click', (event) => {
     }
 });
 courseCategory.addEventListener('click', (event) => {
-    console.log(courseAscend);
     if (courseAscend) {
         courseAscend = false;
         studentArr.sort((a, b) => {
@@ -512,7 +561,6 @@ courseCategory.addEventListener('click', (event) => {
         populateStudentSection(studentArr);
     }
     else {
-        courseAscend = true;
         studentArr.sort((a, b) => {
             if (b.course < a.course) {
                 return 1;
@@ -528,7 +576,6 @@ courseCategory.addEventListener('click', (event) => {
     }
 });
 gradeCategory.addEventListener('click', (event) => {
-    console.log(gradeAscend);
     if (gradeAscend) {
         gradeAscend = false;
         studentArr.sort((a, b) => Number(a.grade) - Number(b.grade));
